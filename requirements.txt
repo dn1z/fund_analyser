@@ -1,0 +1,4 @@
+matplotlib
+requests
+yfinance
+python-dateutil
