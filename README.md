@@ -1,14 +1,19 @@
 # fund_analyser
-A script that provides plotting functions for prices and yields of funds in [tefas.gov.tr](https://tefas.gov.tr)
+TR: [tefas.gov.tr](https://tefas.gov.tr) sitesinde yer alan fonların fiyat ve getirileri için çizim programı  
+ENG: A script that provides plotting functions for prices and yields of funds in [tefas.gov.tr](https://tefas.gov.tr)
 
-## Installation
+## Installation (tr. kurulum)
+* Make sure python, pip, and git is installed. (tr. python, pip ve git uygulamaları kurulu değilse kurun)
+* Execute following commands in console. (tr. konsolda aşağıdaki komutları çalıştırın)
 ```
+git clone https://github.com/dn1z/fund_analyser
+cd fund_analyser
 pip install -r requirements.txt
 python setup.py install
 ```
 
-## Usage
-* As a command line script
+## Usage (tr. kullanım)
+* As a command line script (tr. konsol uygulaması olarak)
 ```
 usage: fund_analyser plot [-h] [-c] [-t [TICKERS [TICKERS ...]]] (-m MONTHS | -d DAYS | -w WEEKS | -y YEARS) funds [funds ...]
 usage: fund_analyser table [-h] [-t [TICKERS [TICKERS ...]]] (-m MONTHS | -d DAYS | -w WEEKS | -y YEARS) funds [funds ...]
@@ -27,7 +32,7 @@ optional arguments:
   -w WEEKS, --weeks WEEKS
   -y YEARS, --years YEARS
 ```
-* As a library
+* As a library (tr. yazılım kütüphanesi olarak)
 ```python
 from fund_analyser import FundAnalyser
 
