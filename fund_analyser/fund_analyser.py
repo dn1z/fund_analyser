@@ -95,7 +95,7 @@ class FundAnalyser:
         x = []
         y = []
         for k, i in h.items():
-            x.append(k.to_pydatetime())
+            x.append(k.to_pydatetime().date())
             y.append(i)
         return (x, y)
 
