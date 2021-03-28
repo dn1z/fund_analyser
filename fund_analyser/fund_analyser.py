@@ -10,13 +10,6 @@ from dateutil.relativedelta import relativedelta
 _API_LINK = "https://ws.spk.gov.tr/PortfolioValues/api/PortfoyDegerleri/{strTakasCodesArray}/1/{dateBegin}/{dateEnd}"
 
 
-class _bcolors:
-    GREEN = '\033[92m'
-    RED = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-
-
 class _Interval:
     _begin = None
     _end = None
@@ -208,7 +201,7 @@ class FundAnalyser:
             first = next(a for a in data[e][1] if a > 0)
             y = [v * 100 / first - 100 for v in data[e][1]]
             plt.plot(x, y, label=e)
-   
+
         plt.ylabel(r'% change')
         plt.gca().yaxis.grid(True)
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %d %Y'))
@@ -239,17 +232,15 @@ class FundAnalyser:
             prices = data[el][1]
             for i, date in enumerate(dates):
                 price = prices[i]
-                color = '' if last_price == None else _bcolors.GREEN if last_price < price else _bcolors.RED
                 percentage = '' if last_price == None else (
                     '-%' if price < last_price else ' %') + "{:.2f}".format(abs(100 - (price * 100 / last_price)))
-                print(str(date)[:10] + ': ' + color +
-                      "{:.6f}".format(price) + ' ' + percentage + _bcolors.ENDC)
+                print(str(date)[:10] + ': ' +
+                      "{:.6f}".format(price) + ' ' + percentage)
                 last_price = price
 
             first_price = prices[0]
-            color = _bcolors.GREEN if first_price < last_price else _bcolors.RED
-            overall[el] = color + ('-%' if last_price < first_price else ' %') + "{:.2f}".format(
-                abs(100 - (last_price * 100 / first_price))) + _bcolors.ENDC
+            overall[el] = ('-%' if last_price < first_price else ' %') + "{:.2f}".format(
+                abs(100 - (last_price * 100 / first_price)))
 
         print('\n')
         for f in overall.keys():
