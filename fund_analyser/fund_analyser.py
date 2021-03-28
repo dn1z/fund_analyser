@@ -106,7 +106,7 @@ class FundAnalyser:
             y.append(i)
         return (x, y)
 
-    def plot(self, *takas_codes, tickers=None, compare=False):
+    def plot(self, *takas_codes, tickers=None):
         '''
         Plots prices and percent changes of takas codes and tickers.
         PARAMETERS
@@ -115,10 +115,6 @@ class FundAnalyser:
             Funds takas code(s)
         tickers: list
             Tickers of symbols (Yahoo! Finance)
-        compare: bool
-            If compare is false (default) function draws prices and percent
-            changes of funds and tickers seperately, otherwise it draws only
-            percent changes of funds and tickers in single plot
         '''
         self._interval._reset()
 
@@ -194,7 +190,7 @@ class FundAnalyser:
         return self._interval
 
     @staticmethod
-    def _plot(takas_codes, tickers, interval, compare):
+    def _plot(takas_codes, tickers, interval):
         url = FundAnalyser._create_link(takas_codes, interval)
         data = FundAnalyser._get_data(url)
 
@@ -204,53 +200,21 @@ class FundAnalyser:
                 if res:
                     data[t] = res
 
-        if compare:
-            for e in data:
-                x = data[e][0]
-                if type(x[0]) == str:
-                    x = [datetime.strptime(d, "%Y-%m-%d").date()
-                         for d in x]
-                first = next(a for a in data[e][1] if a > 0)
-                y = [v * 100 / first - 100 for v in data[e][1]]
-                plt.plot(x, y, label=e)
-
-            plt.ylabel(r'% change')
-            plt.gca().yaxis.grid(True)
-            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %d %Y'))
-            plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=max(len(x) // 7, 1)))
-            plt.gcf().autofmt_xdate()
-            plt.legend()
-
-        else:
-            for e in data:
-                plt.figure()
-                x = data[e][0]
-                y = data[e][1]
-                if type(x[0]) == str:
-                    x = [datetime.strptime(d, "%Y-%m-%d").date()
-                         for d in x]
-
-                plt.subplot(121)
-                plt.title(e)
-                plt.ylabel('Price')
-                plt.gca().yaxis.grid(True)
-                plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %d %Y'))
-                plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=max(len(x) // 7, 1)))
-                plt.plot(x, y)
-                plt.gcf().autofmt_xdate()
-
-                plt.subplot(122)
-                plt.title(e)
-                plt.ylabel(r'% change')
-                plt.gca().yaxis.grid(True)
-                plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %d %Y'))
-                plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=max(len(x) // 7, 1)))
-
-                first = next(a for a in data[e][1] if a > 0)
-                t = [v * 100 / first - 100 for v in y]
-
-                plt.plot(x, t)
-                plt.gcf().autofmt_xdate()
+        for e in data:
+            x = data[e][0]
+            if type(x[0]) == str:
+                x = [datetime.strptime(d, "%Y-%m-%d").date()
+                     for d in x]
+            first = next(a for a in data[e][1] if a > 0)
+            y = [v * 100 / first - 100 for v in data[e][1]]
+            plt.plot(x, y, label=e)
+   
+        plt.ylabel(r'% change')
+        plt.gca().yaxis.grid(True)
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %d %Y'))
+        plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=max(len(x) // 7, 1)))
+        plt.gcf().autofmt_xdate()
+        plt.legend()
 
         plt.show()
 
@@ -339,9 +303,6 @@ def main():
     hist = subparsers.add_parser('hist')
     table = subparsers.add_parser('table')
 
-    plot.add_argument('-c', '--compare',
-                      help='Compare funds and tickers in same plot', action='store_true')
-
     def check_positive(value):
         ivalue = int(value)
         if ivalue <= 0:
@@ -363,7 +324,7 @@ def main():
 
     a = FundAnalyser()
     if args.command == 'plot':
-        t = a.plot(*args.funds, tickers=args.tickers, compare=args.compare)
+        t = a.plot(*args.funds, tickers=args.tickers)
     elif args.command == 'hist':
         t = a.hist(*args.funds, tickers=args.tickers)
     elif args.command == 'table':

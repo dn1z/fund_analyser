@@ -15,7 +15,7 @@ python setup.py install
 ## Usage (tr. kullanım)
 * As a command line script (tr. konsol uygulaması olarak)
 ```
-usage: fund_analyser plot [-h] [-c] [-t [TICKERS [TICKERS ...]]] (-m MONTHS | -d DAYS | -w WEEKS | -y YEARS) funds [funds ...]
+usage: fund_analyser plot [-h] [-t [TICKERS [TICKERS ...]]] (-m MONTHS | -d DAYS | -w WEEKS | -y YEARS) funds [funds ...]
 usage: fund_analyser table [-h] [-t [TICKERS [TICKERS ...]]] (-m MONTHS | -d DAYS | -w WEEKS | -y YEARS) funds [funds ...]
 usage: fund_analyser hist [-h] [-t [TICKERS [TICKERS ...]]] (-m MONTHS | -d DAYS | -w WEEKS | -y YEARS) funds [funds ...]
 
@@ -24,7 +24,6 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c, --compare         Compare funds and tickers
   -t [TICKERS [TICKERS ...]], --tickers [TICKERS [TICKERS ...]]
                         Symbol of tickers (Yahoo! Finance)
   -m MONTHS, --months MONTHS
@@ -41,7 +40,6 @@ a = FundAnalyser()
 a.plot('AAA').weeks(1)  # plots last weeks performance of the fund
 a.plot('BBB', 'CCC').months(2)  # plots multiple funds
 a.plot('DDD', tickers=['USDTRY=X']).years(3)  # plots a ticker with fund
-a.plot('EEE', 'FFF', tickers=['^IXIC', 'USDTRY=X'], compare=True).days(10)  # plots yields of all elements in single plot
 
 a.table('GGG', tickers=['USDTRY=X']).months(1)  # prints table of prices and yields to console
 
